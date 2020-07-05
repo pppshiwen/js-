@@ -12,7 +12,8 @@
 // isEmpty()：如果链表中不包含任何元素，返回true，如果链表长度大于0则返回false。
 // size()：返回链表包含的元素个数。与数组的length属性类似。
 // toString()：由于列表项使用了Node类，就需要重写继承自JavaScript对象默认的toString方法，让其只输出元素的值。
-
+// forwardString() 从后向前打印
+// backwardString() 从前开始打印
 
 
 //双向链表
@@ -44,6 +45,36 @@ function DoublyLinkedList() {
             newNode.prev = this.tail;
             this.tail.next = newNode;
             this.tail = newNode;
+        }
+        this.length +=1;
+    }
+
+    // insert(position, element)：向列表的特定位置插入一个新的项。
+    DoublyLinkedList.prototype.insert = function(position, element){
+        // 越界判断 
+        if(position < 0 || position > this.length)return;
+        var newNode = new Node(element);
+        //如果为第一个
+        if(position == 0){
+            newNode.next = this.head;
+            // this.head.prev = newNode;
+            this.head = newNode;
+        }else if(position == this.length){
+            this.tail.next = newNode; // or 
+            newNode.prev = this.tail;
+            this.tail = newNode;
+        }else{
+            var currentNode = this.head;
+            var previewNode = null;
+            var count = 0;
+            while(count++ < position){
+                previewNode = currentNode;
+                currentNode = currentNode.next;
+            }
+            previewNode.next = newNode;
+            newNode.prev = previewNode;
+            newNode.next = currentNode;
+
         }
         this.length +=1;
     }
@@ -94,3 +125,7 @@ link.append('4');
 console.log("link", link.backwardString());
 //测试forwardString()方法
 console.log('link',link.forwardString());
+
+// 测试insert
+link.insert(6,"10");
+console.log("link", link.toString());
