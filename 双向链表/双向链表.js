@@ -52,17 +52,25 @@ function DoublyLinkedList() {
     // insert(position, element)：向列表的特定位置插入一个新的项。
     DoublyLinkedList.prototype.insert = function(position, element){
         // 越界判断 
-        if(position < 0 || position > this.length)return;
+        if(position < 0 || position > this.length)return false;
         var newNode = new Node(element);
         //如果为第一个
         if(position == 0){
-            newNode.next = this.head;
-            // this.head.prev = newNode;
-            this.head = newNode;
+            // 判断链表是否为空
+            if(this.head == null){
+                this.head = newNode;// 头
+                this.tail = newNode;// 尾
+            }else{
+                newNode.next = this.head;
+                this.head.prev = newNode;
+                this.head = newNode;
+            }
+        // 判断是否为最后一个  
         }else if(position == this.length){
             this.tail.next = newNode; // or 
             newNode.prev = this.tail;
             this.tail = newNode;
+        // 在中间位置插入数据
         }else{
             var currentNode = this.head;
             var previewNode = null;
@@ -71,12 +79,15 @@ function DoublyLinkedList() {
                 previewNode = currentNode;
                 currentNode = currentNode.next;
             }
+            //交换节点顺序
             previewNode.next = newNode;
             newNode.prev = previewNode;
             newNode.next = currentNode;
+            currentNode.pre = newNode;
 
         }
         this.length +=1;
+        return true;
     }
 
     // toString
@@ -112,6 +123,31 @@ function DoublyLinkedList() {
         }
         return str;
     }
+
+    // get(position), 获取对应位置的元素
+    DoublyLinkedList.prototype.get = function(position) {
+        // 越界判断
+        if(position < 0 || position >= this.length)return null;
+        if(this.length/2 > position){ //位置大于一半，就从后往前
+            var count = this.length-1;
+            var currentNode = this.tail;
+            while(count-- > position ){
+                currentNode = currentNode.prev;
+            }
+            return currentNode.data;
+        }else{ // 小于一半，就从前往后
+            var count = 0;
+            var currentNode = this.head;
+            while(count++ < position){
+                currentNode = currentNode.next;
+            }
+            return currentNode.data; 
+        }
+        
+    }
+
+    //indexOf(element)：返回元素在列表中的索引。如果列表中没有该元素则返回-1。
+    // DoublyLinkedList.prototype.
 }
 
 //测试append(data)
@@ -127,5 +163,13 @@ console.log("link", link.backwardString());
 console.log('link',link.forwardString());
 
 // 测试insert
-link.insert(6,"10");
+// link.insert(4,"10");
+
+// 测试get
+console.log('link----get',link.get(4));
+console.log('link----get',link.get(0));
+console.log('link----get',link.get(3));
+
+
+
 console.log("link", link.toString());
