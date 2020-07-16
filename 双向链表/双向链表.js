@@ -147,7 +147,24 @@ function DoublyLinkedList() {
     }
 
     //indexOf(element)：返回元素在列表中的索引。如果列表中没有该元素则返回-1。
-    // DoublyLinkedList.prototype.
+    DoublyLinkedList.prototype.indexOf = function(element){
+        if(this.length == 0) return -1;
+        var currentNode = this.head;
+        var count = 0;
+        // while(currentNode.data != element){
+        //     count +=1;
+        //     currentNode = currentNode.next;
+        // }
+        // return count;
+        while(currentNode){
+            if(currentNode.data == element){
+                return count;
+            }
+            currentNode = currentNode.next;
+            count +=1;
+        }
+        return -1;
+    }
 }
 
 //测试append(data)
@@ -166,10 +183,11 @@ console.log('link',link.forwardString());
 // link.insert(4,"10");
 
 // 测试get
-console.log('link----get',link.get(4));
-console.log('link----get',link.get(0));
-console.log('link----get',link.get(3));
+// console.log('link----get',link.get(4));
+// console.log('link----get',link.get(0));
+// console.log('link----get',link.get(3));
 
-
+// 测试indexOf
+console.log('link----indexOf',link.indexOf('1'));
 
 console.log("link", link.toString());
